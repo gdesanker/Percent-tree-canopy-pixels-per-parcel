@@ -1,6 +1,10 @@
 # Percent-tree-canopy-pixels-per-parcel
 
--- scenario 1: parcels with >75% canopy cover, loose 35% of existing canopy
+-- scenario 1: parcels with >20% canopy cover, loose 35% of existing canopy
+-- lots are required to have at least 20% open space/yard space for residential lots
+-- assumption: that the 20% open space/yard is inclusive of the trees
+
+
 -- sum all pixels from lc to find total number of pixels per parcel
 
 --create table results_scratch.scen_one as
@@ -12,3 +16,10 @@ FROM results_scratch.snad_parcels_lc_gkd;
 select  bbl, "lc_2010_parcel_17x1x1_Correct_histo_1" as treepix, total_pixels, ("lc_2010_parcel_17x1x1_Correct_histo_1"::numeric/total_pixels::numeric)*100 as prop_canopy
 from results_scratch.scen_one
 group by bbl, "lc_2010_parcel_17x1x1_Correct_histo_1", total_pixels
+
+
+-- pull out the parcels with a canopy cover greater than 20%
+select * from (select  bbl, "lc_2010_parcel_17x1x1_Correct_histo_1" as treepix, total_pixels, ("lc_2010_parcel_17x1x1_Correct_histo_1"::numeric/total_pixels::numeric)*100 as prop_canopy
+from results_scratch.scen_one
+group by bbl, "lc_2010_parcel_17x1x1_Correct_histo_1", total_pixels) as foo
+where prop_canopy > 20;
