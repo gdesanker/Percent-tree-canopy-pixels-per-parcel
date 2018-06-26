@@ -9,6 +9,6 @@ FROM results_scratch.snad_parcels_lc_gkd;
 
 --calculate percent of canopy cover in each parcel
 -- make sure canopy cover pixels and total pixels are case as numeric
-select  bbl, "lc_2010_parcel_17x1x1_Correct_histo_1" as treepix, total_pixels, ("lc_2010_parcel_17x1x1_Correct_histo_1"::numeric/total_pixels::numeric) as prop_canopy
+select  bbl, "lc_2010_parcel_17x1x1_Correct_histo_1" as treepix, total_pixels, ("lc_2010_parcel_17x1x1_Correct_histo_1"::numeric/total_pixels::numeric)*100 as prop_canopy
 from results_scratch.scen_one
 group by bbl, "lc_2010_parcel_17x1x1_Correct_histo_1", total_pixels
