@@ -23,3 +23,12 @@ select * from (select  bbl, "lc_2010_parcel_17x1x1_Correct_histo_1" as treepix, 
 from results_scratch.scen_one
 group by bbl, "lc_2010_parcel_17x1x1_Correct_histo_1", total_pixels) as foo
 where prop_canopy > 20;
+
+
+-- create new column for scenario one, where the 20%+ parcels loose 35% of their existing canopy cover
+--  ERROR MISSING FROM CLAUSE FOR SCEN_ONE
+select scen_one."lc_2010_parcel_17x1x1_Correct_histo_1"::numeric-(scen_one."lc_2010_parcel_17x1x1_Correct_histo_1"::numeric*.35) as remaining_pix, (scen_one."lc_2010_parcel_17x1x1_Correct_histo_1"::numeric-(scen_one."lc_2010_parcel_17x1x1_Correct_histo_1"::numeric*.35)/total_pixels::numeric)*100 as prop_remaining, bbl, treepix, total_pixels, prop_canopy 
+from(select * from (select  bbl, "lc_2010_parcel_17x1x1_Correct_histo_1" as treepix, total_pixels, ("lc_2010_parcel_17x1x1_Correct_histo_1"::numeric/total_pixels::numeric)*100 as prop_canopy
+from results_scratch.scen_one
+group by bbl, "lc_2010_parcel_17x1x1_Correct_histo_1", total_pixels) as foo
+where prop_canopy > 20) as foo;
